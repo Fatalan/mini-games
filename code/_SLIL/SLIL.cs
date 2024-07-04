@@ -1336,7 +1336,7 @@ namespace minigames._SLIL
 
         private Color GetColorForPixel(Pixel pixel)
         {
-            int textureSize = 128;
+            int textureSize = SCREEN_HEIGHT;
             int x = 0, y = 0;
             if (pixel.TextureId < 6)
             {
@@ -1378,7 +1378,7 @@ namespace minigames._SLIL
                 graphicsWeapon.Clear(Color.Transparent);
                 graphicsWeapon.DrawImage(player.Guns[player.CurrentGun].Images[player.Guns[player.CurrentGun].GetLevel(), player.GunState], 0, 0, WEAPON.Width, WEAPON.Height);
                 if (ShowFPS)
-                    graphicsWeapon.DrawString($"FPS: {fps}", consolasFont, whiteBrush, 228, 0, rightToLeft);
+                    graphicsWeapon.DrawString($"FPS: {fps}", consolasFont, whiteBrush, SCREEN_WIDTH, 0, rightToLeft);
                 graphicsWeapon.DrawString($"TIME LEFT: {space_0}{minutes}:{space_1}{seconds}", consolasFont, whiteBrush, 0, 0);
                 graphicsWeapon.DrawImage(Properties.Resources.hp, 2, 108, 14, 14);
                 graphicsWeapon.DrawImage(Properties.Resources.money, 2, 14, 14, 14);
@@ -1418,7 +1418,7 @@ namespace minigames._SLIL
                     graphicsWeapon.Clear(Color.Transparent);
                     graphicsWeapon.DrawImage(player.Guns[player.CurrentGun].Images[player.Guns[player.CurrentGun].GetLevel(), 0], 0, 0, WEAPON.Width, WEAPON.Height);
                     if (ShowFPS)
-                        graphicsWeapon.DrawString($"FPS: {fps}", consolasFont, whiteBrush, 228, 0, rightToLeft);
+                        graphicsWeapon.DrawString($"FPS: {fps}", consolasFont, whiteBrush, SCREEN_WIDTH, 0, rightToLeft);
                     graphicsWeapon.DrawString($"TIME LEFT: {space_0}{minutes}:{space_1}{seconds}", consolasFont, whiteBrush, 0, 0);
                     graphicsWeapon.DrawImage(Properties.Resources.hp, 2, 108, 14, 14);
                     graphicsWeapon.DrawImage(Properties.Resources.money, 2, 14, 14, 14);
@@ -1564,7 +1564,8 @@ namespace minigames._SLIL
                         break;
                 }
             }
-            double ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / distance;
+            double perpWallDist = distance * Math.Cos(deltaA);
+            double ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / perpWallDist;
             double floor = SCREEN_HEIGHT - (ceiling + player.Look);
             double mid = (ceiling + floor) / 2;
             bool get_texture = false, get_texture_window = false;
@@ -1582,12 +1583,13 @@ namespace minigames._SLIL
                 }
                 else
                 {
-                    ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / distance;
+                    ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / perpWallDist;
                     floor = SCREEN_HEIGHT - (ceiling + player.Look);
                 }
                 if (y <= ceiling)
                 {
-                    textureId = 9;
+                    //ceiling pixel
+                    textureId = 0; // 9 
                     double d = ((y + player.Look / 2) / (SCREEN_HEIGHT / 2));
                     blackout = (int)(Math.Min(Math.Max(0, d * 100), 100));
                 }
@@ -1616,15 +1618,16 @@ namespace minigames._SLIL
                         textureId = 4;
                     if (is_bound || is_door_bound)
                         textureId = 7;
-                    blackout = (int)(Math.Min(Math.Max(0, Math.Floor((distance / (DEPTH + factor)) * 100)), 100));
+                    blackout = (int)(Math.Min(Math.Max(0, Math.Floor((perpWallDist / (DEPTH + factor)) * 100)), 100));
                 }
                 else if (y > floor)
                 {
                     textureId = 0; //12
                     double d = 1 - (y - (SCREEN_HEIGHT - player.Look) / 2) / (SCREEN_HEIGHT / 2);
                     blackout = (int)(Math.Min(Math.Max(0, d * 100), 100));
+
                 }
-                result[y] = new Pixel(x, y, blackout, distance, ceiling - floor, textureId);
+                result[y] = new Pixel(x, y, blackout, perpWallDist, ceiling - floor, textureId);
                 if (y >= ceiling && y < floor)
                 {
                     if (y >= mid && hit_window)
@@ -1635,7 +1638,7 @@ namespace minigames._SLIL
                             side = GetSide(window_distance, ray_x, ray_y);
                             if (side == -1)
                                 result[y].TextureId = 6;
-                            double perpWallDist = window_distance * Math.Cos(deltaA);
+                            perpWallDist = window_distance * Math.Cos(deltaA);
                             if (side == 0)
                                 wallX = player.X + perpWallDist * ray_x;
                             else
@@ -1651,7 +1654,7 @@ namespace minigames._SLIL
                             side = GetSide(distance, ray_x, ray_y);
                             if (side == -1)
                                 result[y].TextureId = 6;
-                            double perpWallDist = distance * Math.Cos(deltaA);
+                            perpWallDist = distance * Math.Cos(deltaA);
                             if (side == 0)
                                 wallX = player.X + perpWallDist * ray_x;
                             else
@@ -1673,19 +1676,77 @@ namespace minigames._SLIL
                         result[y].Side = side;
                     }
                 }
-                else if (y >= floor)
+                if (y >= floor)
                 {
+                    /*
+                    // rayDir for leftmost ray (x = 0) and rightmost ray (x = w)
+                    // ray_x for x = 0, ray_y for y = 0, ray_x for x = width?, ray_y for y=width?
+                    /*double rayDirX0 = dirX - planeX;
+                    double rayDirY0 = dirY - planeY;
+                    double rayDirX1 = dirX + planeX;
+                    double rayDirY1 = dirY + planeY;
+
+                    double deltaA0 = FOV / 2;
+                    double rayA0 = player.A + deltaA0;
+                    double ray_x0 = Math.Sin(rayA0);
+                    double ray_y0 = Math.Cos(rayA0);
+
+                    double deltaA1 = -FOV / 2;
+                    double rayA1 = player.A + deltaA1;
+                    double ray_x1 = Math.Sin(rayA1);
+                    double ray_y1 = Math.Cos(rayA1);
+
+                    double rayDirX0 = ray_x0;
+                    double rayDirY0 = ray_y0;
+                    double rayDirX1 = ray_x1;
+                    double rayDirY1 = ray_y1;
+
+                    // Current y position compared to the center of the screen (the horizon)
                     int p = y - SCREEN_HEIGHT / 2;
-                    double rowDistance = (0.5 * SCREEN_HEIGHT) / p;
+
+                    // Vertical position of the camera.
+                    double posZ = 0.5 * SCREEN_HEIGHT;
+
+                    // Horizontal distance from the camera to the floor for the current row.
+                    // 0.5 is the z position exactly in the middle between floor and ceiling.
+                    double rowDistance = posZ / p;
+
+                    // calculate the real world step vector we have to add for each x (parallel to camera plane)
+                    // adding step by step avoids multiplications with a weight in the inner loop
+                    double floorStepX = rowDistance * (rayDirX1 - rayDirX0) / SCREEN_WIDTH;
+                    double floorStepY = rowDistance * (rayDirY1 - rayDirY0) / SCREEN_WIDTH;
+
+                    // real world coordinates of the leftmost column. This will be updated as we step to the right.
+                    double floorX = player.X + rowDistance * rayDirX0;
+                    double floorY = player.Y + rowDistance * rayDirY0;
+
+                    floorX += floorStepX * x;
+                    floorY += floorStepY * y;
+
+                    result[y].TextureX = floorX%1;
+                    result[y].TextureY = floorY%1;
+                    //result[y].Side = GetSide(distance, ray_x, ray_y);
+                    */
+
+                    //floor pixel
+                    int p = y - (int)(SCREEN_HEIGHT-player.Look) / 2;
+                    double rowDistance = (double)SCREEN_HEIGHT / p;
                     double floorX = player.X + rowDistance * ray_x;
                     double floorY = player.Y + rowDistance * ray_y;
-                    int cellX = (int)floorX;
-                    int cellY = (int)floorY;
-                    int tx = (int)(128 * (floorX - cellX)) & (128 - 1);
-                    int ty = (int)(128 * (floorY - cellY)) & (128 - 1);
-                    result[y].TextureX = tx;
-                    result[y].TextureY = ty;
-                    result[y].Side = 0;
+                    result[y].TextureX = floorX % 1;
+                    result[y].TextureY = floorY % 1;
+                    result[y].Side = 1;
+                }
+                if (y <= ceiling)
+                {
+                    //ceiling pixel
+                    int p = y - (int)(SCREEN_HEIGHT - player.Look) / 2;
+                    double rowDistance = (double)SCREEN_HEIGHT / p;
+                    double floorX = player.X - rowDistance * ray_x;
+                    double floorY = player.Y - rowDistance * ray_y;
+                    result[y].TextureX = floorX % 1;
+                    result[y].TextureY = floorY % 1;
+                    result[y].Side = 1;
                 }
             }
             return result;
