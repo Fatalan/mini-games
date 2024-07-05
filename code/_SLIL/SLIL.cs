@@ -1565,6 +1565,8 @@ namespace minigames._SLIL
                 }
             }
             double perpWallDist = distance * Math.Cos(deltaA);
+            //TODO: add correcting by the Z axes (we need to figure out some transmittion between pixels and radians as player.Look is between -360 to 360 PIXELS OR we may change player.Look to be in radians and rewrite all formulas with it)
+
             double ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / perpWallDist;
             double floor = SCREEN_HEIGHT - (ceiling + player.Look);
             double mid = (ceiling + floor) / 2;
@@ -1729,24 +1731,24 @@ namespace minigames._SLIL
                     */
 
                     //floor pixel
-                    int p = y - (int)(SCREEN_HEIGHT-player.Look) / 2;
+                    int p = y - (int)(SCREEN_HEIGHT - player.Look) / 2; //Horizon = (screen height - player.Look (deviation from screen center in Z coords in pixels))/2
                     double rowDistance = (double)SCREEN_HEIGHT / p;
                     double floorX = player.X + rowDistance * ray_x;
                     double floorY = player.Y + rowDistance * ray_y;
                     result[y].TextureX = floorX % 1;
                     result[y].TextureY = floorY % 1;
-                    result[y].Side = 1;
+                    //result[y].Side = 1;
                 }
                 if (y <= ceiling)
                 {
                     //ceiling pixel
-                    int p = y - (int)(SCREEN_HEIGHT - player.Look) / 2;
+                    int p = y - (int)(SCREEN_HEIGHT - player.Look) / 2; //Horizon = (screen height - player.Look (deviation from screen center in Z coords in pixels))/2
                     double rowDistance = (double)SCREEN_HEIGHT / p;
                     double floorX = player.X - rowDistance * ray_x;
                     double floorY = player.Y - rowDistance * ray_y;
                     result[y].TextureX = floorX % 1;
                     result[y].TextureY = floorY % 1;
-                    result[y].Side = 1;
+                    //result[y].Side = 1;
                 }
             }
             return result;

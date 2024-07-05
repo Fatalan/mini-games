@@ -7,6 +7,14 @@
       "RelativeMoniker": "D:0:0:{9C0EBD49-3189-48B9-B381-01B508831341}|lazastic.csproj|solutionrelative:_slil\\slil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{9C0EBD49-3189-48B9-B381-01B508831341}|lazastic.csproj|c:\\users\\lilit\\onedrive\\desktop\\forgodssake\\mini-games\\code\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9C0EBD49-3189-48B9-B381-01B508831341}|lazastic.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9C0EBD49-3189-48B9-B381-01B508831341}|lazastic.csproj|c:\\users\\lilit\\onedrive\\desktop\\forgodssake\\mini-games\\code\\app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{9C0EBD49-3189-48B9-B381-01B508831341}|lazastic.csproj|solutionrelative:app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{9C0EBD49-3189-48B9-B381-01B508831341}|lazastic.csproj|C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\_slil\\slil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{9C0EBD49-3189-48B9-B381-01B508831341}|lazastic.csproj|solutionrelative:_slil\\slil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
@@ -34,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,31 +58,58 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-05T13:49:47.971Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "app.manifest",
+              "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\app.manifest",
+              "RelativeDocumentMoniker": "app.manifest",
+              "ToolTip": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\app.manifest",
+              "RelativeToolTip": "app.manifest",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAABEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001203|",
+              "WhenOpened": "2024-07-05T10:30:14.828Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "SLIL.cs",
               "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\_SLIL\\SLIL.cs",
               "RelativeDocumentMoniker": "_SLIL\\SLIL.cs",
               "ToolTip": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\_SLIL\\SLIL.cs",
               "RelativeToolTip": "_SLIL\\SLIL.cs",
-              "ViewState": "AQIAALgGAAAAAAAAAAAAANQGAAAmAAAA",
+              "ViewState": "AQIAAA4HAAAAAAAAAAAYwC8HAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-04T07:25:16.606Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "SLIL.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\_SLIL\\SLIL.cs",
               "RelativeDocumentMoniker": "_SLIL\\SLIL.cs",
               "ToolTip": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\_SLIL\\SLIL.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "RelativeToolTip": "_SLIL\\SLIL.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-04T13:50:11.698Z"
+              "WhenOpened": "2024-07-04T13:50:11.698Z",
+              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "wall.png",
               "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\wall.png",
               "RelativeDocumentMoniker": "wall.png",
@@ -85,7 +120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "TextureCache.cs",
               "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\_SLIL\\TextureCache.cs",
               "RelativeDocumentMoniker": "_SLIL\\TextureCache.cs",
@@ -97,18 +132,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "Resources.resx",
               "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\Properties\\Resources.resx",
               "RelativeDocumentMoniker": "Properties\\Resources.resx",
               "ToolTip": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\Properties\\Resources.resx",
               "RelativeToolTip": "Properties\\Resources.resx",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2024-07-04T07:40:12.057Z"
+              "WhenOpened": "2024-07-04T07:40:12.057Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Resources.resx",
               "DocumentMoniker": "C:\\Users\\lilit\\OneDrive\\Desktop\\forgodssake\\mini-games\\code\\Properties\\Resources.resx",
               "RelativeDocumentMoniker": "Properties\\Resources.resx",
@@ -116,7 +152,8 @@
               "RelativeToolTip": "Properties\\Resources.resx",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAH0AAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2024-07-04T07:19:10.847Z"
+              "WhenOpened": "2024-07-04T07:19:10.847Z",
+              "EditorCaption": ""
             }
           ]
         }
