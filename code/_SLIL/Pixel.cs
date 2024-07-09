@@ -10,6 +10,7 @@
         public int TextureId { get; set; }
         public double TextureX { get; set; }
         public double TextureY { get; set; }
+        public double RowDistance { get; set; }
         public int Side { get; set; }
 
         public Pixel(int x, int y, int blackout, double distance, double wallHeight, int textureId)

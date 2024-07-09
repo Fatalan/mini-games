@@ -1009,10 +1009,10 @@ namespace minigames._SLIL
                 double size = MainMenu.scaled ? MainMenu.scale_size * 0.95 : 1;
                 player.A -= (((X / x) / 10) * (LOOK_SPEED * size)) * scale;
                 player.Look += (((Y / y) * 30) * (LOOK_SPEED * size)) * scale;
-                if (player.Look < -360)
-                    player.Look = -360;
-                else if (player.Look > 360)
-                    player.Look = 360;
+                /*if (player.Look < 0)
+                    player.Look = 0;
+                else if (player.Look > 0)
+                    player.Look = 0;*/
                 Cursor.Position = display.PointToScreen(new Point((int)x, (int)y));
             }
         }
@@ -1336,6 +1336,21 @@ namespace minigames._SLIL
 
         private Color GetColorForPixel(Pixel pixel)
         {
+            if (pixel.RowDistance > 0)
+            {
+                if(pixel.RowDistance > 0 && pixel.RowDistance <= 1)
+                {
+                    return Color.Red;
+                }
+                if (pixel.RowDistance > 1 && pixel.RowDistance <= 2)
+                {
+                    return Color.Blue;
+                }
+                if (pixel.RowDistance > 2)
+                {
+                    return Color.Green;
+                }
+            }
             int textureSize = SCREEN_HEIGHT;
             int x = 0, y = 0;
             if (pixel.TextureId < 6)
@@ -1566,8 +1581,8 @@ namespace minigames._SLIL
             }
             double perpWallDist = distance * Math.Cos(deltaA);
             //TODO: add correcting by the Z axes (we need to figure out some transmittion between pixels and radians as player.Look is between -360 to 360 PIXELS OR we may change player.Look to be in radians and rewrite all formulas with it)
-
-            double ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / perpWallDist;
+            const double divisor = 2.25d;
+            double ceiling = (SCREEN_HEIGHT - player.Look) / divisor - (SCREEN_HEIGHT * FOV) / perpWallDist;
             double floor = SCREEN_HEIGHT - (ceiling + player.Look);
             double mid = (ceiling + floor) / 2;
             bool get_texture = false, get_texture_window = false;
@@ -1580,12 +1595,12 @@ namespace minigames._SLIL
                 int blackout = 0, textureId = 6;
                 if (hit_window && y > mid)
                 {
-                    ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / window_distance;
+                    ceiling = (SCREEN_HEIGHT - player.Look) / divisor - (SCREEN_HEIGHT * FOV) / window_distance;
                     floor = SCREEN_HEIGHT - (ceiling + player.Look);
                 }
                 else
                 {
-                    ceiling = (SCREEN_HEIGHT - player.Look) / 2.25d - (SCREEN_HEIGHT * FOV) / perpWallDist;
+                    ceiling = (SCREEN_HEIGHT - player.Look) / divisor - (SCREEN_HEIGHT * FOV) / perpWallDist;
                     floor = SCREEN_HEIGHT - (ceiling + player.Look);
                 }
                 if (y <= ceiling)
@@ -1640,11 +1655,11 @@ namespace minigames._SLIL
                             side = GetSide(window_distance, ray_x, ray_y);
                             if (side == -1)
                                 result[y].TextureId = 6;
-                            perpWallDist = window_distance * Math.Cos(deltaA);
+                            //perpWallDist = window_distance * Math.Cos(deltaA);
                             if (side == 0)
-                                wallX = player.X + perpWallDist * ray_x;
+                                wallX = player.X + window_distance * ray_x;
                             else
-                                wallX = player.Y + perpWallDist * ray_y;
+                                wallX = player.Y + window_distance * ray_y;
                             wallX -= Math.Floor(wallX);
                         }
                     }
@@ -1656,11 +1671,11 @@ namespace minigames._SLIL
                             side = GetSide(distance, ray_x, ray_y);
                             if (side == -1)
                                 result[y].TextureId = 6;
-                            perpWallDist = distance * Math.Cos(deltaA);
+                            //perpWallDist = distance * Math.Cos(deltaA);
                             if (side == 0)
-                                wallX = player.X + perpWallDist * ray_x;
+                                wallX = player.X + distance * ray_x;
                             else
-                                wallX = player.Y + perpWallDist * ray_y;
+                                wallX = player.Y + distance * ray_y;
                             wallX -= Math.Floor(wallX);
                         }
                     }
@@ -1731,13 +1746,35 @@ namespace minigames._SLIL
                     */
 
                     //floor pixel
-                    int p = y - (int)(SCREEN_HEIGHT - player.Look) / 2; //Horizon = (screen height - player.Look (deviation from screen center in Z coords in pixels))/2
+                    int p = y - (int)(SCREEN_HEIGHT - player.Look)/2; //Horizon = (screen height - player.Look (deviation from screen center in Z coords in pixels))/2
                     double rowDistance = (double)SCREEN_HEIGHT / p;
-                    double floorX = player.X + rowDistance * ray_x;
-                    double floorY = player.Y + rowDistance * ray_y;
+                    //rowDistance *= Math.Cos(deltaA);
+                    double rayDirX0 = Math.Sin(player.A) - Math.Sin(player.A + Math.PI / 2);
+                    double rayDirY0 = Math.Cos(player.A) - Math.Cos(player.A + Math.PI / 2);
+                    double rayDirX1 = Math.Sin(player.A) + Math.Sin(player.A + Math.PI / 2);
+                    double rayDirY1 = Math.Cos(player.A) + Math.Cos(player.A + Math.PI / 2);
+                    double floorStepX = rowDistance * (rayDirX1 - rayDirX0) / SCREEN_WIDTH;
+                    double floorStepY = rowDistance * (rayDirY1 - rayDirY0) / SCREEN_WIDTH;
+                    //возможная проблема: ray_x и ray_y - это лучи, идущие не к пикселю на полу, а к пикселю стены или к пикселю, где кончается глубина
+                    //хотя вроде как эти пиксели находятся как раз таки на этих лучах, просто ближе к их началу
+                    double floorX = player.X + rowDistance * rayDirX0;
+                    double floorY = player.Y + rowDistance * rayDirY0;
+
+                    floorX += floorStepX * x;
+                    floorY += floorStepY * x;
+                    result[y].TextureId = -1;
+                    result[y].RowDistance = rowDistance;
                     result[y].TextureX = floorX % 1;
                     result[y].TextureY = floorY % 1;
                     //result[y].Side = 1;
+                    if (x == 0)
+                    {
+                        ;
+                    }
+                    if(floorX > 30 || floorY>30)
+                    {
+                        ;
+                    }
                 }
                 if (y <= ceiling)
                 {
